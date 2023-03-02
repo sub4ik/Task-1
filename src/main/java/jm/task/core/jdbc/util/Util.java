@@ -1,9 +1,15 @@
 package jm.task.core.jdbc.util;
 
+import jm.task.core.jdbc.model.User;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
+
 import java.sql.*;
 
 public class Util {
     // реализуйте настройку соеденения с БД
+    private static final SessionFactory sessionFactory = buildSessionFactory();
     private static final String DB_URL = "jdbc:postgresql://localhost:5432/postgres";
     private static final String USER = "postgres";
     private static final String PASSWORD = "25807";
@@ -22,14 +28,15 @@ public class Util {
         }
     }
 
-    public static boolean tableExists(Connection connection, String tableName) throws SQLException {
-        String query = "SELECT EXISTS (SELECT 1 FROM information_schema.tables WHERE table_name = ?)";
-        try (PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setString(1, tableName);
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            return resultSet.getBoolean(1);
-        }
+    public static SessionFactory getSessionFactory(){
+        return sessionFactory;
     }
+
+    private static SessionFactory buildSessionFactory(){
+        Configuration configuration = new Configuration().addAnnotatedClass(User.class);
+        return configuration.buildSessionFactory();
+    }
+
+
 
 }

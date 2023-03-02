@@ -10,6 +10,7 @@ public class Main {
         // реализуйте алгоритм здесь
         UserServiceImpl userService = new UserServiceImpl();
         userService.createUsersTable();
+        System.out.println("Created");
 
         userService.saveUser("Sub", "Tash", (byte)27);
         userService.saveUser("Tem", "Tash", (byte)25);
